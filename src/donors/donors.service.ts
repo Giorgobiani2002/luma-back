@@ -4,12 +4,14 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Donor, DonorDocument } from './schemas/donor.schema';
 import { Model } from 'mongoose';
 import { AwsS3Service } from 'src/aws-s3/aws-s3.service';
+import { EmailSenderService } from 'src/email-sender/email-sender.service';
 
 @Injectable()
 export class DonorsService {
   constructor(
     @InjectModel(Donor.name) private donorModel: Model<DonorDocument>,
     private readonly awsS3Service: AwsS3Service,
+    private EmailSenderService: EmailSenderService,
   ) {}
 
   async createWithFiles(
@@ -64,7 +66,28 @@ export class DonorsService {
     const newDonor = new this.donorModel(newDonorData);
     console.log('[DEBUG] New donor data:', newDonorData);
 
-    return newDonor.save();
+    const savedDonor = await newDonor.save();
+
+    const donorForEmail = {
+      name: savedDonor.name,
+      lastName: savedDonor.lastName,
+      age: savedDonor.age,
+      height: savedDonor.height,
+      weight: savedDonor.weight,
+      mobileNumber: savedDonor.mobileNumber,
+      education: savedDonor.education,
+      photo1: savedDonor.photo1,
+      photo2: savedDonor.photo2,
+      photo3: savedDonor.photo3,
+    };
+
+    await this.EmailSenderService.sendEmailHtmltoAdmin(
+      'nozadzegiorgi1011@gmail.com',
+      'New User Register',
+      donorForEmail,
+    );
+
+    return savedDonor;
   }
 
   findAll() {
