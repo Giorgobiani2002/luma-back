@@ -52,6 +52,7 @@ export class AwsS3Service {
         Bucket: this.bucketName,
         Body: compressedBuffer,
         ContentType: file.mimetype,
+        
       };
 
       const uploadCommand = new PutObjectCommand(config);
