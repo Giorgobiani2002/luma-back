@@ -7,17 +7,20 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
+  UseGuards,
 } from '@nestjs/common';
 import { DonorsService } from './donors.service';
 import { CreateDonorDto } from './dto/create-donor.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
+import { PhoneRateLimitGuard } from './guards/donore.guard';
 
 @Controller('donors')
 export class DonorsController {
   constructor(private readonly donorsService: DonorsService) {}
 
   @Post('create')
-  @UseInterceptors(AnyFilesInterceptor()) 
+  @UseGuards(PhoneRateLimitGuard)
+  @UseInterceptors(AnyFilesInterceptor())
   async createWithFiles(
     @Body() createDonorDto: CreateDonorDto,
     @UploadedFiles() files: Express.Multer.File[],
@@ -28,7 +31,6 @@ export class DonorsController {
       throw new Error('At least one photo is required');
     }
 
-   
     return this.donorsService.createWithFiles(createDonorDto, files);
   }
 

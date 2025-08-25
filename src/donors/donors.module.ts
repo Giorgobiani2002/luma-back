@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Donor, DonorSchema } from './schemas/donor.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { AwsS3Module } from 'src/aws-s3/aws-s3.module';
+import { PhoneRateLimitGuard } from './guards/donore.guard';
 
 @Module({
   imports: [
@@ -13,6 +14,6 @@ import { AwsS3Module } from 'src/aws-s3/aws-s3.module';
     AwsS3Module,
   ],
   controllers: [DonorsController],
-  providers: [DonorsService],
+  providers: [DonorsService, PhoneRateLimitGuard],
 })
 export class DonorsModule {}

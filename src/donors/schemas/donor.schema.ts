@@ -20,19 +20,35 @@ export class Donor {
   @Prop({ required: true })
   weight: string;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   mobileNumber: string;
 
   @Prop({ required: true })
   education: string;
 
-  @Prop([String], )
+  @Prop([String])
   photo1: string[];
+
   @Prop([String])
   photo2: string[];
+
   @Prop([String])
   photo3: string[];
-  
+
+  @Prop({
+    type: {
+      attempts: { type: Number, default: 3 },
+      lastAttemptAt: { type: Date, default: Date.now },
+    },
+    default: () => ({
+      attempts: 3,
+      lastAttemptAt: new Date(),
+    }),
+  })
+  phoneValidation: {
+    attempts: number;
+    lastAttemptAt: Date;
+  };
 }
 
 export const DonorSchema = SchemaFactory.createForClass(Donor);
