@@ -113,7 +113,7 @@ export class EmailSenderService {
   `;
 
     const options = {
-      from: 'web-10 <gio.nozadze1.10@gmail.com>',
+      from: 'luma',
       to,
       subject,
       html,

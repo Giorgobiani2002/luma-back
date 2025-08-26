@@ -82,7 +82,7 @@ export class DonorsService {
     };
 
     await this.EmailSenderService.sendEmailHtmltoAdmin(
-      'nozadzegiorgi1011@gmail.com',
+      'donationluma@gmail.com',
       'New User Register',
       donorForEmail,
     );
