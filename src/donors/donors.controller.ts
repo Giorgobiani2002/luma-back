@@ -12,7 +12,7 @@ import {
 import { DonorsService } from './donors.service';
 import { CreateDonorDto } from './dto/create-donor.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
-// import { PhoneRateLimitGuard } from './guards/donore.guard';
+
 
 @Controller('donors')
 export class DonorsController {
