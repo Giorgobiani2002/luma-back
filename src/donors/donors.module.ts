@@ -5,7 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Donor, DonorSchema } from './schemas/donor.schema';
 import { MulterModule } from '@nestjs/platform-express';
 import { AwsS3Module } from 'src/aws-s3/aws-s3.module';
-import { PhoneRateLimitGuard } from './guards/donore.guard';
+
 import { EmailSenderModule } from 'src/email-sender/email-sender.module';
 
 @Module({
@@ -16,6 +16,6 @@ import { EmailSenderModule } from 'src/email-sender/email-sender.module';
     EmailSenderModule,
   ],
   controllers: [DonorsController],
-  providers: [DonorsService, PhoneRateLimitGuard],
+  providers: [DonorsService ],
 })
 export class DonorsModule {}
