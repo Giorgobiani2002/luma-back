@@ -11,7 +11,7 @@ export class DonorsService {
   constructor(
     @InjectModel(Donor.name) private donorModel: Model<DonorDocument>,
     private readonly awsS3Service: AwsS3Service,
-    private EmailSenderService: EmailSenderService,
+    private readonly emailSenderService: EmailSenderService,
   ) {}
 
   async createWithFiles(
@@ -81,7 +81,7 @@ export class DonorsService {
       photo3: savedDonor.photo3,
     };
 
-    await this.EmailSenderService.sendEmailHtmltoAdmin(
+    await this.emailSenderService.sendEmailHtmltoAdmin(
       'donationluma@gmail.com',
       'New User Register',
       donorForEmail,
