@@ -13,7 +13,6 @@ import { DonorsService } from './donors.service';
 import { CreateDonorDto } from './dto/create-donor.dto';
 import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
-
 @Controller('donors')
 export class DonorsController {
   constructor(private readonly donorsService: DonorsService) {}
@@ -47,5 +46,9 @@ export class DonorsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.donorsService.remove(id);
+  }
+  @Get('ping')
+  ping() {
+    return { status: 'ok' };
   }
 }
