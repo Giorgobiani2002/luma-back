@@ -23,8 +23,8 @@ const path_1 = __importDefault(require("path"));
 const dynamicImport = async (packageName) => new Function(`return import('${packageName}')`)();
 exports.dynamicImport = dynamicImport;
 const DEFAULT_ADMIN = {
-    email: 'donationluma@example.com',
-    password: 'luma2025',
+    email: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
 };
 const authenticate = async (email, password) => {
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
