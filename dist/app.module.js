@@ -22,16 +22,6 @@ const mailer_1 = require("@nestjs-modules/mailer");
 const path_1 = __importDefault(require("path"));
 const dynamicImport = async (packageName) => new Function(`return import('${packageName}')`)();
 exports.dynamicImport = dynamicImport;
-const DEFAULT_ADMIN = {
-    email: process.env.ADMIN_EMAIL,
-    password: process.env.ADMIN_PASSWORD,
-};
-const authenticate = async (email, password) => {
-    if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {
-        return Promise.resolve(DEFAULT_ADMIN);
-    }
-    return null;
-};
 const createAppModule = async () => {
     const AdminJSImport = await (0, exports.dynamicImport)('adminjs');
     const AdminJS = AdminJSImport.default;
@@ -45,9 +35,14 @@ const createAppModule = async () => {
         Database: AdminJSMongoose.Database,
     });
     const AdminPanelModule = AdminModule.createAdminAsync({
-        imports: [mongoose_module_1.MongooseSchemasModule],
-        inject: [(0, mongoose_1.getModelToken)('Donor')],
-        useFactory: async (DonorModel) => {
+        imports: [config_1.ConfigModule, mongoose_module_1.MongooseSchemasModule],
+        inject: [config_1.ConfigService, (0, mongoose_1.getModelToken)('Donor')],
+        useFactory: async (config, DonorModel) => {
+            const adminEmail = config.get('ADMIN_EMAIL');
+            const adminPassword = config.get('ADMIN_PASSWORD');
+            const cookieName = config.get('ADMIN_COOKIE_NAME');
+            const cookiePassword = config.get('ADMIN_COOKIE_PASSWORD');
+            const sessionSecret = config.get('SESSION_SECRET');
             return {
                 adminJsOptions: {
                     rootPath: '/admin',
@@ -99,14 +94,19 @@ const createAppModule = async () => {
                     ],
                 },
                 auth: {
-                    authenticate,
-                    cookieName: 'adminjs',
-                    cookiePassword: 'secret',
+                    authenticate: async (email, password) => {
+                        if (email === adminEmail && password === adminPassword) {
+                            return { email: adminEmail };
+                        }
+                        return null;
+                    },
+                    cookieName,
+                    cookiePassword,
                 },
                 sessionOptions: {
                     resave: true,
                     saveUninitialized: true,
-                    secret: 'secret',
+                    secret: sessionSecret,
                 },
             };
         },
