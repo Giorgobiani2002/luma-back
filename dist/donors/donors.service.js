@@ -22,13 +22,18 @@ const email_sender_service_1 = require("../email-sender/email-sender.service");
 let DonorsService = class DonorsService {
     donorModel;
     awsS3Service;
-    EmailSenderService;
-    constructor(donorModel, awsS3Service, EmailSenderService) {
+    emailSenderService;
+    constructor(donorModel, awsS3Service, emailSenderService) {
         this.donorModel = donorModel;
         this.awsS3Service = awsS3Service;
-        this.EmailSenderService = EmailSenderService;
+        this.emailSenderService = emailSenderService;
     }
     async createWithFiles(createDonorDto, files) {
+        const { mobileNumber } = createDonorDto;
+        if (!mobileNumber) {
+            throw new common_1.BadRequestException('მობილურის ნომერი აუცილებელია');
+        }
+        await this.checkRateLimit(mobileNumber);
         const photoUrls = {
             photo1: [],
             photo2: [],
@@ -56,16 +61,36 @@ let DonorsService = class DonorsService {
             else if (i === 2)
                 photoUrls.photo3.push(url);
         }
+        const existingDonor = await this.donorModel.findOne({ mobileNumber });
+        if (existingDonor) {
+            const updatedDonor = await this.donorModel.findOneAndUpdate({ mobileNumber }, {
+                ...createDonorDto,
+                ...photoUrls,
+            }, { new: true, upsert: false });
+            const donorForEmail = {
+                name: updatedDonor.name,
+                lastName: updatedDonor.lastName,
+                age: updatedDonor.age,
+                height: updatedDonor.height,
+                weight: updatedDonor.weight,
+                mobileNumber: updatedDonor.mobileNumber,
+                education: updatedDonor.education,
+                photo1: updatedDonor.photo1,
+                photo2: updatedDonor.photo2,
+                photo3: updatedDonor.photo3,
+            };
+            await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
+            return updatedDonor;
+        }
         const newDonorData = {
             ...createDonorDto,
             ...photoUrls,
             phoneValidation: {
-                attempts: 3,
+                attempts: 2,
                 lastAttemptAt: new Date(),
             },
         };
         const newDonor = new this.donorModel(newDonorData);
-        console.log('[DEBUG] New donor data:', newDonorData);
         const savedDonor = await newDonor.save();
         const donorForEmail = {
             name: savedDonor.name,
@@ -79,8 +104,34 @@ let DonorsService = class DonorsService {
             photo2: savedDonor.photo2,
             photo3: savedDonor.photo3,
         };
-        await this.EmailSenderService.sendEmailHtmltoAdmin('donationluma@gmail.com', 'New User Register', donorForEmail);
+        await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
         return savedDonor;
+    }
+    async checkRateLimit(mobileNumber) {
+        let existingDonor = await this.donorModel.findOne({ mobileNumber });
+        if (!existingDonor) {
+            return;
+        }
+        const now = new Date();
+        const lastAttempt = new Date(existingDonor.phoneValidation.lastAttemptAt);
+        const timeDifference = now.getTime() - lastAttempt.getTime();
+        const hoursDifference = timeDifference / (1000 * 60 * 60);
+        if (hoursDifference >= 24) {
+            await this.donorModel.findOneAndUpdate({ mobileNumber }, {
+                $set: {
+                    'phoneValidation.attempts': 3,
+                    'phoneValidation.lastAttemptAt': now,
+                },
+            }, { new: true });
+            return;
+        }
+        if (existingDonor.phoneValidation.attempts <= 0) {
+            const remainingTime = Math.ceil(24 - hoursDifference);
+            throw new common_1.BadRequestException(`ამ მობილურის ნომერი ${mobileNumber} გაგზავნა შეზღუდულია. სცადეთ ${remainingTime} საათის შემდეგ.`);
+        }
+        existingDonor = await this.donorModel.findOneAndUpdate({ mobileNumber }, {
+            $inc: { 'phoneValidation.attempts': -1 },
+        }, { new: true });
     }
     findAll() {
         return this.donorModel.find().exec();

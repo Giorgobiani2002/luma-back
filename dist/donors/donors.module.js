@@ -14,7 +14,6 @@ const mongoose_1 = require("@nestjs/mongoose");
 const donor_schema_1 = require("./schemas/donor.schema");
 const platform_express_1 = require("@nestjs/platform-express");
 const aws_s3_module_1 = require("../aws-s3/aws-s3.module");
-const donore_guard_1 = require("./guards/donore.guard");
 const email_sender_module_1 = require("../email-sender/email-sender.module");
 let DonorsModule = class DonorsModule {
 };
@@ -28,7 +27,7 @@ exports.DonorsModule = DonorsModule = __decorate([
             email_sender_module_1.EmailSenderModule,
         ],
         controllers: [donors_controller_1.DonorsController],
-        providers: [donors_service_1.DonorsService, donore_guard_1.PhoneRateLimitGuard],
+        providers: [donors_service_1.DonorsService],
     })
 ], DonorsModule);
 //# sourceMappingURL=donors.module.js.map

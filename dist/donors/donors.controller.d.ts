@@ -8,6 +8,9 @@ export declare class DonorsController {
     }> & {
         __v: number;
     }>;
+    ping(): {
+        status: string;
+    };
     findAll(): Promise<(import("mongoose").Document<unknown, {}, import("./schemas/donor.schema").DonorDocument, {}, {}> & import("./schemas/donor.schema").Donor & import("mongoose").Document<unknown, any, any, Record<string, any>, {}> & Required<{
         _id: unknown;
     }> & {

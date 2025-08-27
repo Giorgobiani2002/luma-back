@@ -29,6 +29,9 @@ let DonorsController = class DonorsController {
         }
         return this.donorsService.createWithFiles(createDonorDto, files);
     }
+    ping() {
+        return { status: 'ok' };
+    }
     findAll() {
         return this.donorsService.findAll();
     }
@@ -49,6 +52,12 @@ __decorate([
     __metadata("design:paramtypes", [create_donor_dto_1.CreateDonorDto, Array]),
     __metadata("design:returntype", Promise)
 ], DonorsController.prototype, "createWithFiles", null);
+__decorate([
+    (0, common_1.Get)('ping'),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", []),
+    __metadata("design:returntype", void 0)
+], DonorsController.prototype, "ping", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),

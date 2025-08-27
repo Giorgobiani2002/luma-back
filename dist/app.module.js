@@ -19,8 +19,8 @@ const mailer_1 = require("@nestjs-modules/mailer");
 const dynamicImport = async (packageName) => new Function(`return import('${packageName}')`)();
 exports.dynamicImport = dynamicImport;
 const DEFAULT_ADMIN = {
-    email: 'admin@example.com',
-    password: 'admin',
+    email: 'donationluma@example.com',
+    password: 'luma2025',
 };
 const authenticate = async (email, password) => {
     if (email === DEFAULT_ADMIN.email && password === DEFAULT_ADMIN.password) {

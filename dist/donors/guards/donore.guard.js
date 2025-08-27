@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PhoneRateLimitGuard = void 0;
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
+const mongoose_2 = require("mongoose");
+const donor_schema_1 = require("../schemas/donor.schema");
 let PhoneRateLimitGuard = class PhoneRateLimitGuard {
     donorModel;
     constructor(donorModel) {
@@ -23,10 +25,12 @@ let PhoneRateLimitGuard = class PhoneRateLimitGuard {
     async canActivate(context) {
         const request = context.switchToHttp().getRequest();
         const mobileNumber = request.body.mobileNumber;
+        console.log(request, 'request');
+        console.log(mobileNumber, 'mobileNumber');
         if (!mobileNumber) {
             throw new common_1.BadRequestException('მობილურის ნომერი აუცილებელია');
         }
-        const existingDonor = await this.donorModel.findOne({ mobileNumber });
+        let existingDonor = await this.donorModel.findOne({ mobileNumber });
         if (!existingDonor) {
             return true;
         }
@@ -35,23 +39,22 @@ let PhoneRateLimitGuard = class PhoneRateLimitGuard {
         const timeDifference = now.getTime() - lastAttempt.getTime();
         const hoursDifference = timeDifference / (1000 * 60 * 60);
         if (hoursDifference >= 24) {
-            await this.donorModel.updateOne({ mobileNumber }, {
+            existingDonor = await this.donorModel.findOneAndUpdate({ mobileNumber }, {
                 $set: {
                     'phoneValidation.attempts': 3,
                     'phoneValidation.lastAttemptAt': now,
                 },
-            });
+            }, { new: true });
             return true;
         }
         if (existingDonor.phoneValidation.attempts <= 0) {
             const remainingTime = Math.ceil(24 - hoursDifference);
-            throw new common_1.BadRequestException(` ამ მობილურის ნომერი ${mobileNumber} გაგზავნა შეზღუდულია. სცადეთ ${remainingTime} საათის შემდეგ.`);
+            throw new common_1.BadRequestException(`ამ მობილურის ნომერი ${mobileNumber} გაგზავნა შეზღუდულია. სცადეთ ${remainingTime} საათის შემდეგ.`);
         }
-        await this.donorModel.updateOne({ mobileNumber }, {
+        existingDonor = await this.donorModel.findOneAndUpdate({ mobileNumber }, {
             $inc: { 'phoneValidation.attempts': -1 },
-            $set: { 'phoneValidation.lastAttemptAt': now },
-        });
-        const remainingAttempts = Math.max(0, existingDonor.phoneValidation.attempts - 1);
+        }, { new: true });
+        const remainingAttempts = existingDonor.phoneValidation.attempts;
         console.log(`[INFO] Mobile ${mobileNumber} has ${remainingAttempts} attempts remaining`);
         return true;
     }
@@ -59,7 +62,7 @@ let PhoneRateLimitGuard = class PhoneRateLimitGuard {
 exports.PhoneRateLimitGuard = PhoneRateLimitGuard;
 exports.PhoneRateLimitGuard = PhoneRateLimitGuard = __decorate([
     (0, common_1.Injectable)(),
-    __param(0, (0, mongoose_1.InjectModel)('Donor')),
-    __metadata("design:paramtypes", [Object])
+    __param(0, (0, mongoose_1.InjectModel)(donor_schema_1.Donor.name)),
+    __metadata("design:paramtypes", [mongoose_2.Model])
 ], PhoneRateLimitGuard);
 //# sourceMappingURL=donore.guard.js.map

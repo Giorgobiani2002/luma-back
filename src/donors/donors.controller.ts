@@ -18,7 +18,6 @@ export class DonorsController {
   constructor(private readonly donorsService: DonorsService) {}
 
   @Post('create')
-  // @UseGuards(PhoneRateLimitGuard)
   @UseInterceptors(AnyFilesInterceptor())
   async createWithFiles(
     @Body() createDonorDto: CreateDonorDto,
