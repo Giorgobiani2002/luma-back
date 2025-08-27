@@ -36,53 +36,41 @@ let EmailSenderService = class EmailSenderService {
       <div style="background-color: #f0f8ff; padding: 15px; border-radius: 5px;">
         <h3 style="color: #555; margin-top: 0;">ატვირთული ფოტოები:</h3>
         
-        ${donorForEmail.photo1.length > 0
+        ${donorForEmail.photo1
             ? `
           <div style="margin-bottom: 15px;">
             <h4 style="color: #666;">ფოტო 1:</h4>
-            ${donorForEmail.photo1
-                .map((url) => `
-              <div style="margin-bottom: 10px;">
-                <img src="${url}" alt="Photo 1" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
-                <br>
-                <a href="${url}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
-              </div>
-            `)
-                .join('')}
+            <div style="margin-bottom: 10px;">
+              <img src="${donorForEmail.photo1}" alt="Photo 1" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+              <br>
+              <a href="${donorForEmail.photo1}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
+            </div>
           </div>
         `
             : ''}
 
-        ${donorForEmail.photo2.length > 0
+        ${donorForEmail.photo2
             ? `
           <div style="margin-bottom: 15px;">
             <h4 style="color: #666;">ფოტო 2:</h4>
-            ${donorForEmail.photo2
-                .map((url) => `
-              <div style="margin-bottom: 10px;">
-                <img src="${url}" alt="Photo 2" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
-                <br>
-                <a href="${url}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
-              </div>
-            `)
-                .join('')}
+            <div style="margin-bottom: 10px;">
+              <img src="${donorForEmail.photo2}" alt="Photo 2" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+              <br>
+              <a href="${donorForEmail.photo2}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
+            </div>
           </div>
         `
             : ''}
 
-        ${donorForEmail.photo3.length > 0
+        ${donorForEmail.photo3
             ? `
           <div style="margin-bottom: 15px;">
             <h4 style="color: #666;">ფოტო 3:</h4>
-            ${donorForEmail.photo3
-                .map((url) => `
-              <div style="margin-bottom: 10px;">
-                <img src="${url}" alt="Photo 3" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
-                <br>
-                <a href="${url}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
-              </div>
-            `)
-                .join('')}
+            <div style="margin-bottom: 10px;">
+              <img src="${donorForEmail.photo3}" alt="Photo 3" style="max-width: 200px; height: auto; border: 1px solid #ddd; border-radius: 4px;">
+              <br>
+              <a href="${donorForEmail.photo3}" target="_blank" style="font-size: 12px; color: #007bff;">ფოტოს ნახვა</a>
+            </div>
           </div>
         `
             : ''}

@@ -11,6 +11,15 @@ export class Donor {
   @Prop({ required: true })
   lastName: string;
 
+  @Prop({ type: String })
+  photo1: string;
+
+  @Prop({ type: String })
+  photo2: string;
+
+  @Prop({ type: String })
+  photo3: string;
+
   @Prop({ required: true })
   age: string;
 
@@ -25,15 +34,6 @@ export class Donor {
 
   @Prop({ required: true })
   education: string;
-
-  @Prop([String])
-  photo1: string[];
-
-  @Prop([String])
-  photo2: string[];
-
-  @Prop([String])
-  photo3: string[];
 
   @Prop({
     type: {

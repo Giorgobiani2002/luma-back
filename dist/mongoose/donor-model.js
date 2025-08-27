@@ -15,6 +15,15 @@ exports.DonorSchema = new Schema({
         type: String,
         required: true,
     },
+    photo1: {
+        type: String,
+    },
+    photo2: {
+        type: String,
+    },
+    photo3: {
+        type: String,
+    },
     age: {
         type: String,
         required: true,
@@ -35,15 +44,6 @@ exports.DonorSchema = new Schema({
     education: {
         type: String,
         required: true,
-    },
-    photo1: {
-        type: [String],
-    },
-    photo2: {
-        type: [String],
-    },
-    photo3: {
-        type: [String],
     },
     phoneValidation: {
         type: {

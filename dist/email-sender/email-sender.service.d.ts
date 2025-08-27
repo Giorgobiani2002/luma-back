@@ -10,8 +10,8 @@ export declare class EmailSenderService {
         weight: string;
         mobileNumber: string;
         education: string;
-        photo1: string[];
-        photo2: string[];
-        photo3: string[];
+        photo1?: string;
+        photo2?: string;
+        photo3?: string;
     }): Promise<void>;
 }

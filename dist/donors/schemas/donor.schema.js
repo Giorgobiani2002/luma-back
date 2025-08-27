@@ -14,14 +14,14 @@ const mongoose_1 = require("@nestjs/mongoose");
 let Donor = class Donor {
     name;
     lastName;
+    photo1;
+    photo2;
+    photo3;
     age;
     height;
     weight;
     mobileNumber;
     education;
-    photo1;
-    photo2;
-    photo3;
     phoneValidation;
 };
 exports.Donor = Donor;
@@ -33,6 +33,18 @@ __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], Donor.prototype, "lastName", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], Donor.prototype, "photo1", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], Donor.prototype, "photo2", void 0);
+__decorate([
+    (0, mongoose_1.Prop)({ type: String }),
+    __metadata("design:type", String)
+], Donor.prototype, "photo3", void 0);
 __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
@@ -53,18 +65,6 @@ __decorate([
     (0, mongoose_1.Prop)({ required: true }),
     __metadata("design:type", String)
 ], Donor.prototype, "education", void 0);
-__decorate([
-    (0, mongoose_1.Prop)([String]),
-    __metadata("design:type", Array)
-], Donor.prototype, "photo1", void 0);
-__decorate([
-    (0, mongoose_1.Prop)([String]),
-    __metadata("design:type", Array)
-], Donor.prototype, "photo2", void 0);
-__decorate([
-    (0, mongoose_1.Prop)([String]),
-    __metadata("design:type", Array)
-], Donor.prototype, "photo3", void 0);
 __decorate([
     (0, mongoose_1.Prop)({
         type: {

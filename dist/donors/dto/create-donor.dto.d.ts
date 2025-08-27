@@ -6,7 +6,7 @@ export declare class CreateDonorDto {
     weight: number;
     education: string;
     mobileNumber: string;
-    photo1: string[];
-    photo2: string[];
-    photo3: string[];
+    photo1: string;
+    photo2: string;
+    photo3: string;
 }

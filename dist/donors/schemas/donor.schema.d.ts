@@ -3,14 +3,14 @@ export type DonorDocument = Donor & Document;
 export declare class Donor {
     name: string;
     lastName: string;
+    photo1: string;
+    photo2: string;
+    photo3: string;
     age: string;
     height: string;
     weight: string;
     mobileNumber: string;
     education: string;
-    photo1: string[];
-    photo2: string[];
-    photo3: string[];
     phoneValidation: {
         attempts: number;
         lastAttemptAt: Date;
