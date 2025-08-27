@@ -32,6 +32,10 @@ export class DonorsController {
 
     return this.donorsService.createWithFiles(createDonorDto, files);
   }
+  @Get('ping')
+  ping() {
+    return { status: 'ok' };
+  }
 
   @Get()
   findAll() {
@@ -46,9 +50,5 @@ export class DonorsController {
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.donorsService.remove(id);
-  }
-  @Get('ping')
-  ping() {
-    return { status: 'ok' };
   }
 }
