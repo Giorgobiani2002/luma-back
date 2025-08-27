@@ -88,8 +88,7 @@ export class DonorsService {
       };
 
       await this.emailSenderService.sendEmailHtmltoAdmin(
-        // 'donationluma@gmail.com',
-        'nozadzegiorgi1011@gmail.com',
+        'donationluma@gmail.com',
         'New User Register',
         donorForEmail,
       );
@@ -123,13 +122,12 @@ export class DonorsService {
     };
 
     await this.emailSenderService.sendEmailHtmltoAdmin(
-      // 'donationluma@gmail.com',
-      'nozadzegiorgi1011@gmail.com',
+      'donationluma@gmail.com',
       'New User Register',
       donorForEmail,
     );
 
-    // console.log(savedDonor);
+    console.log(savedDonor);
 
     return savedDonor;
   }

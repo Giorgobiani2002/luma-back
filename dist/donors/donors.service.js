@@ -77,7 +77,7 @@ let DonorsService = class DonorsService {
                 photo2: updatedDonor.photo2,
                 photo3: updatedDonor.photo3,
             };
-            await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
+            await this.emailSenderService.sendEmailHtmltoAdmin('donationluma@gmail.com', 'New User Register', donorForEmail);
             return updatedDonor;
         }
         const newDonorData = {
@@ -102,7 +102,8 @@ let DonorsService = class DonorsService {
             photo2: savedDonor.photo2,
             photo3: savedDonor.photo3,
         };
-        await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
+        await this.emailSenderService.sendEmailHtmltoAdmin('donationluma@gmail.com', 'New User Register', donorForEmail);
+        console.log(savedDonor);
         return savedDonor;
     }
     async checkRateLimit(mobileNumber) {
