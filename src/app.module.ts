@@ -14,8 +14,8 @@ export const dynamicImport = async (packageName: string) =>
   new Function(`return import('${packageName}')`)();
 
 const DEFAULT_ADMIN = {
-  email: 'admin@example.com',
-  password: 'admin',
+  email: 'donationluma@example.com',
+  password: 'luma2025',
 };
 
 const authenticate = async (email: string, password: string) => {
