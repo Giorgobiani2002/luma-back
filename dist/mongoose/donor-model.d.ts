@@ -21,8 +21,8 @@ export declare const DonorSchema: mongoose.Schema<any, mongoose.Model<any, any, 
     age: string;
     height: string;
     weight: string;
-    mobileNumber: string;
     education: string;
+    mobileNumber: string;
     phoneValidation: {
         attempts: number;
         lastAttemptAt: NativeDate;
@@ -36,8 +36,8 @@ export declare const DonorSchema: mongoose.Schema<any, mongoose.Model<any, any, 
     age: string;
     height: string;
     weight: string;
-    mobileNumber: string;
     education: string;
+    mobileNumber: string;
     phoneValidation: {
         attempts: number;
         lastAttemptAt: NativeDate;
@@ -51,8 +51,8 @@ export declare const DonorSchema: mongoose.Schema<any, mongoose.Model<any, any, 
     age: string;
     height: string;
     weight: string;
-    mobileNumber: string;
     education: string;
+    mobileNumber: string;
     phoneValidation: {
         attempts: number;
         lastAttemptAt: NativeDate;

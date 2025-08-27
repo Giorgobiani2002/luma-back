@@ -37,14 +37,14 @@ export class DonorsService {
       const timestamp = Date.now();
       const s3Key = `images/${timestamp}-${file.originalname}`;
 
-      console.log(`[DEBUG] File #${i} original name:`, file.originalname);
-      console.log(`[DEBUG] S3 Key:`, s3Key);
+      // console.log(`[DEBUG] File #${i} original name:`, file.originalname);
+      // console.log(`[DEBUG] S3 Key:`, s3Key);
 
       await this.awsS3Service.uploadFile(s3Key, file);
       console.log(`[DEBUG] File #${i} uploaded successfully.`);
 
       const url = await this.awsS3Service.generateSignedUrl(s3Key);
-      console.log(`[DEBUG] Signed URL generated for file #${i}:`, url);
+      // console.log(`[DEBUG] Signed URL generated for file #${i}:`, url);
 
       const cloudFrontUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
 
@@ -129,7 +129,7 @@ export class DonorsService {
       donorForEmail,
     );
 
-    console.log(savedDonor);
+    // console.log(savedDonor);
 
     return savedDonor;
   }

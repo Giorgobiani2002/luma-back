@@ -43,12 +43,9 @@ let DonorsService = class DonorsService {
             const file = files[i];
             const timestamp = Date.now();
             const s3Key = `images/${timestamp}-${file.originalname}`;
-            console.log(`[DEBUG] File #${i} original name:`, file.originalname);
-            console.log(`[DEBUG] S3 Key:`, s3Key);
             await this.awsS3Service.uploadFile(s3Key, file);
             console.log(`[DEBUG] File #${i} uploaded successfully.`);
             const url = await this.awsS3Service.generateSignedUrl(s3Key);
-            console.log(`[DEBUG] Signed URL generated for file #${i}:`, url);
             const cloudFrontUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
             const expectedUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
             console.log(`[DEBUG] Expected CloudFront URL for file #${i}:`, expectedUrl);
@@ -106,7 +103,6 @@ let DonorsService = class DonorsService {
             photo3: savedDonor.photo3,
         };
         await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
-        console.log(savedDonor);
         return savedDonor;
     }
     async checkRateLimit(mobileNumber) {
