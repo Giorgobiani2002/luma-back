@@ -8,8 +8,7 @@ export class CreateDonorDto {
   @IsNotEmpty() @IsString() weight: number;
   @IsNotEmpty() @IsString() education: string;
   @IsNotEmpty() @IsString() mobileNumber: string;
-  photo1: string[];
-  photo2: string[];
-  photo3: string[];
-  
+  photo1: string;
+  photo2: string;
+  photo3: string;
 }

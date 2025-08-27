@@ -9,6 +9,7 @@ import { MongooseSchemasModule } from './mongoose/mongoose.module';
 import { Model } from 'mongoose';
 import { Donor } from './mongoose/donor-model';
 import { MailerModule } from '@nestjs-modules/mailer';
+import path from 'path';
 
 export const dynamicImport = async (packageName: string) =>
   new Function(`return import('${packageName}')`)();
@@ -31,6 +32,11 @@ export const createAppModule = async () => {
   const ComponentLoader = AdminJSImport.ComponentLoader;
   const componentLoader = new ComponentLoader();
 
+  const imageComponentId = componentLoader.add(
+    'ImageComponent',
+    path.join(__dirname, './mongoose/components/ImageComponent'),
+  );
+
   const AdminJSMongoose = await dynamicImport('@adminjs/mongoose');
   const { AdminModule } = await dynamicImport('@adminjs/nestjs');
 
@@ -47,7 +53,54 @@ export const createAppModule = async () => {
         adminJsOptions: {
           rootPath: '/admin',
           componentLoader,
-          resources: [{ resource: DonorModel }],
+          resources: [
+            {
+              resource: DonorModel,
+              options: {
+                properties: {
+                  photo1: {
+                    isVisible: {
+                      list: true,
+                      show: true,
+                      edit: false,
+                      filter: false,
+                    },
+
+                    components: {
+                      list: imageComponentId,
+                      show: imageComponentId,
+                    },
+                  },
+                  photo2: {
+                    isVisible: {
+                      list: true,
+                      show: true,
+                      edit: false,
+                      filter: false,
+                    },
+
+                    components: {
+                      list: imageComponentId,
+                      show: imageComponentId,
+                    },
+                  },
+                  photo3: {
+                    isVisible: {
+                      list: true,
+                      show: true,
+                      edit: false,
+                      filter: false,
+                    },
+
+                    components: {
+                      list: imageComponentId,
+                      show: imageComponentId,
+                    },
+                  },
+                },
+              },
+            },
+          ],
         },
         auth: {
           authenticate,

@@ -35,9 +35,9 @@ let DonorsService = class DonorsService {
         }
         await this.checkRateLimit(mobileNumber);
         const photoUrls = {
-            photo1: [],
-            photo2: [],
-            photo3: [],
+            photo1: '',
+            photo2: '',
+            photo3: '',
         };
         for (let i = 0; i < files.length; i++) {
             const file = files[i];
@@ -49,17 +49,18 @@ let DonorsService = class DonorsService {
             console.log(`[DEBUG] File #${i} uploaded successfully.`);
             const url = await this.awsS3Service.generateSignedUrl(s3Key);
             console.log(`[DEBUG] Signed URL generated for file #${i}:`, url);
+            const cloudFrontUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
             const expectedUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
             console.log(`[DEBUG] Expected CloudFront URL for file #${i}:`, expectedUrl);
             if (url !== expectedUrl) {
                 console.warn(`[WARN] URL mismatch for file #${i}!`);
             }
             if (i === 0)
-                photoUrls.photo1.push(url);
+                photoUrls.photo1 = cloudFrontUrl;
             else if (i === 1)
-                photoUrls.photo2.push(url);
+                photoUrls.photo2 = cloudFrontUrl;
             else if (i === 2)
-                photoUrls.photo3.push(url);
+                photoUrls.photo3 = cloudFrontUrl;
         }
         const existingDonor = await this.donorModel.findOne({ mobileNumber });
         if (existingDonor) {
@@ -105,6 +106,7 @@ let DonorsService = class DonorsService {
             photo3: savedDonor.photo3,
         };
         await this.emailSenderService.sendEmailHtmltoAdmin('nozadzegiorgi1011@gmail.com', 'New User Register', donorForEmail);
+        console.log(savedDonor);
         return savedDonor;
     }
     async checkRateLimit(mobileNumber) {

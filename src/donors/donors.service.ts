@@ -26,12 +26,11 @@ export class DonorsService {
 
     await this.checkRateLimit(mobileNumber);
 
-    const photoUrls: { photo1: string[]; photo2: string[]; photo3: string[] } =
-      {
-        photo1: [],
-        photo2: [],
-        photo3: [],
-      };
+    const photoUrls: { photo1: string; photo2: string; photo3: string } = {
+      photo1: '',
+      photo2: '',
+      photo3: '',
+    };
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
@@ -47,6 +46,8 @@ export class DonorsService {
       const url = await this.awsS3Service.generateSignedUrl(s3Key);
       console.log(`[DEBUG] Signed URL generated for file #${i}:`, url);
 
+      const cloudFrontUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
+
       const expectedUrl = `https://d1hun59bxazh5v.cloudfront.net/${s3Key}`;
       console.log(
         `[DEBUG] Expected CloudFront URL for file #${i}:`,
@@ -57,9 +58,9 @@ export class DonorsService {
         console.warn(`[WARN] URL mismatch for file #${i}!`);
       }
 
-      if (i === 0) photoUrls.photo1.push(url);
-      else if (i === 1) photoUrls.photo2.push(url);
-      else if (i === 2) photoUrls.photo3.push(url);
+      if (i === 0) photoUrls.photo1 = cloudFrontUrl;
+      else if (i === 1) photoUrls.photo2 = cloudFrontUrl;
+      else if (i === 2) photoUrls.photo3 = cloudFrontUrl;
     }
 
     const existingDonor = await this.donorModel.findOne({ mobileNumber });
@@ -127,6 +128,8 @@ export class DonorsService {
       'New User Register',
       donorForEmail,
     );
+
+    console.log(savedDonor);
 
     return savedDonor;
   }
